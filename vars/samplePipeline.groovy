@@ -1,28 +1,25 @@
 #!/usr/bin/env groovy
 
-def pipelineParams= [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = pipelineParams
-    body()
+def call() {
 
     pipeline {
         agent any
         stages {
             stage('checkout git') {
                 steps {
-                    git branch: pipelineParams.branch, credentialsId: 'GitCredentials', url: pipelineParams.scmUrl
+                    sh 'echo checkout'
                 }
             }
 
             stage('build') {
                 steps {
-                    sh 'mvn clean compile'
+                    sh 'echo compile'
                 }
             }
 
             stage ('test') {
                 steps {
-                    sh 'mvn test'
+                    sh 'echo  test'
                 }
             }
 
@@ -33,4 +30,6 @@ def pipelineParams= [:]
             }
 
     }
+}
+
 }
