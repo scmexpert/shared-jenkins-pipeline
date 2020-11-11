@@ -1,35 +1,10 @@
 #!/usr/bin/env groovy
 
-def call() {
+def call(Map stageParams) {
 
-    pipeline {
-        agent any
-        stages {
-            stage('checkout git') {
-                steps {
-                    sh 'echo checkout'
-                }
-            }
-
-            stage('build') {
-                steps {
-                    sh 'echo compile'
-                }
-            }
-
-            stage ('test') {
-                steps {
-                    sh 'echo  test'
-                }
-            }
-
-            stage('deploy'){
-                steps {
-                    sh 'echo deploy'
-                }
-            }
-
-    }
-}
-
-}
+    checkout([
+        $class: 'GitSCM',
+        branches: [[name:  stageParams.branch ]],
+        userRemoteConfigs: [[ url: stageParams.url ]]
+    ])
+  }
